@@ -301,7 +301,17 @@ jQuery.Fotorama = function ($fotorama, opts) {
       $navFrame = $navThumbFrame;
       navFrameKey = NAV_THUMB_FRAME_KEY;
 
-      setStyle($style, $.Fotorama.jst.style({w: o_thumbSide, h: o_thumbSide2, b: opts.thumbborderwidth, m: opts.thumbmargin, s: stamp, q: !COMPAT}));
+      setStyle($style, $.Fotorama.jst.style({
+        w: o_thumbSide, 
+        h: o_thumbSide2, 
+        b: opts.thumbborderwidth, 
+        m: opts.thumbmargin, 
+        s: stampClass,
+        nt: navThumbsClass,
+        nf: navFrameClass,
+        tb: thumbBorderClass,
+        q: !COMPAT
+      }));
 
       $nav
           .addClass(navThumbsClass)
@@ -642,6 +652,9 @@ jQuery.Fotorama = function ($fotorama, opts) {
         $navThumbFrame = $navThumbFrame.add($frame);
         if (dataFrame.video) {
           frameData.$wrap.append($videoPlay.clone());
+        }
+        if (dataFrame.caption && opts.thumbcaptions) {
+            frameData.$wrap.append($(div(captionClass, div(captionWrapClass, dataFrame.caption))));
         }
       }
     });
