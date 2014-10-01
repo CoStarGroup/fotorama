@@ -1,5 +1,5 @@
 document.write(
-    '<div class="fotorama" data-nav="thumbs" data-width="500" data-height="333" data-thumb-width="48" data-thumbheight="48" id="fotorama">' +
+    '<div class="fotorama" data-nav="thumbs" data-width="500" data-height="333" data-thumb-width="48" data-thumbheight="48" data-thumbcaptions="true" id="fotorama">' +
         '<a href="test/i/nyc/guy-in-car.jpg" width="500" height="335" data-caption="Guy in car"></a>' +
         '<a href="test/i/nyc/acapella.jpg" data-caption="Acapella"></a>' +
         '<img src="test/i/nyc/crazyjohn.jpg" data-caption="Crazy John" width="450" height="591px">' +
@@ -104,5 +104,26 @@ describe('Thumbs', function () {
     });
   });
 
-
+  it('can show captions', function() {
+    expect($('.fotorama__caption__wrap', $thumb[0]).html()).toBe('Guy in car');
+    expect($('.fotorama__caption__wrap', $thumb[1]).html()).toBe('Acapella');
+    expect($('.fotorama__caption__wrap', $thumb[2]).html()).toBe('Crazy John');
+    expect($('.fotorama__caption__wrap', $thumb[3]).html()).toBe('Dude in the ground');
+    expect($('.fotorama__caption__wrap', $thumb[4]).html()).toBe('Dudes');
+    expect($('.fotorama__caption__wrap', $thumb[5]).html()).toBe('Explanation');
+    expect($('.fotorama__caption__wrap', $thumb[6]).html()).toBe('Facing wind');
+    expect($('.fotorama__caption__wrap', $thumb[7]).html()).toBe('Father son looking');
+    expect($('.fotorama__caption__wrap', $thumb[8]).html()).toBe('Flip off');
+    expect($('.fotorama__caption__wrap', $thumb[9])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[10])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[11]).html()).toBe('Italian guy');
+    expect($('.fotorama__caption__wrap', $thumb[12])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[13])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[14])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[15])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[16])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[17]).html()).toBe('Streetlook');
+    expect($('.fotorama__caption__wrap', $thumb[18]).html()).toBe('Two umbrellas');
+    expect($('.fotorama__caption__wrap', $thumb[19]).html()).toBe('Woman reading');
+  });
 });
