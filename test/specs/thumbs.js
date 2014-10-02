@@ -1,11 +1,11 @@
 document.write(
-    '<div class="fotorama" data-nav="thumbs" data-width="500" data-height="333" data-thumb-width="48" data-thumbheight="48" data-thumbcaptions="true" id="fotorama">' +
+    '<div class="fotorama" data-nav="thumbs" data-width="500" data-height="333" data-thumbwidth="48" data-thumbheight="48" data-thumbratio="1" data-thumbcaptions="true" id="fotorama">' +
         '<a href="test/i/nyc/guy-in-car.jpg" width="500" height="335" data-caption="Guy in car"></a>' +
         '<a href="test/i/nyc/acapella.jpg" data-caption="Acapella"></a>' +
         '<img src="test/i/nyc/crazyjohn.jpg" data-caption="Crazy John" width="450" height="591px">' +
         '<a href="test/i/nyc/dudeintheground.jpg" data-caption="Dude in the ground"><img src="test/i/nyc/dudeintheground.jpg" width="55" height="34"></a>' +
         '<a href="test/i/nyc/dudes.jpg" data-caption="Dudes" data-width="550" data-height="341"><img src="test/i/nyc/eyes.jpg"></a>' +
-        '<a href="test/i/nyc/explanation.jpg" data-caption="Explanation" data-thumb-width="50" data-thumb-height="36"></a>' +
+        '<a href="test/i/nyc/explanation.jpg" data-caption="Explanation" data-thumb-width="50" data-thumb-height="36" data=thumbratio="1.39"></a>' + //  
         '<a href="test/i/nyc/facing-wind.jpg" data-caption="Facing wind" data-width="500" data-height="383"><img></a>' +
         '<a href="test/i/nyc/father-son-looking.jpg" data-caption="Father son looking" data-width="500" data-height="491"><img src="test/i/nyc/father-son-looking.jpg" width="50" height="49"></a>' +
         '<a href="test/i/nyc/flipoff.jpg" data-caption="Flip off"></a>' +
