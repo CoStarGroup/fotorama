@@ -689,31 +689,42 @@ jQuery.Fotorama = function ($fotorama, opts) {
     if (o_nav !== 'thumbs' || isNaN(pos)) return;
 
     var leftLimit = -pos,
-        rightLimit = -pos + measures.nw;
+        rightLimit = -pos + measures.nw,
+        left = 0;
 
     $navThumbFrame.each(function () {
       var $this = $(this),
           thisData = $this.data(),
           eq = thisData.eq,
-          getSpecialMeasures = function () {
-            return {
-              h: measures.nh,
-              w: thisData.w
-            }
+          frameHeight = measures.nh - opts.thumbmargin,
+          specialMeasures = {
+              h: frameHeight,
+              w: measures.ratio ? Math.round(frameHeight * measures.ratio) : thisData.w
           },
-          specialMeasures = getSpecialMeasures(),
           dataFrame = data[eq] || {},
           method = dataFrame.thumbfit || opts.thumbfit,
           position = dataFrame.thumbposition || opts.thumbposition;
 
-      specialMeasures.w = thisData.w;
+      thisData.h = specialMeasures.h;
+      thisData.w = specialMeasures.w;
+      thisData.l = left;
+      left += thisData.w + opts.thumbmargin;
+
+      // resize this frame
+      $this.css({
+          width: thisData.w,
+          height: thisData.h
+      });
 
       if (thisData.l + thisData.w < leftLimit
           || thisData.l > rightLimit
           || callFit(thisData.$img, specialMeasures, method, position)) return;
 
-      loadFLAG && loadImg([eq], 'navThumb', getSpecialMeasures, method, position);
+      loadFLAG && loadImg([eq], 'navThumb', specialMeasures, method, position);
     });
+
+    // Resize the thumbs border now that we have drawn all of the thumbs
+    resizeThumbBorder();
   }
 
   function frameAppend ($frames, $shaft, type) {
@@ -812,6 +823,14 @@ jQuery.Fotorama = function ($fotorama, opts) {
       time: time * 1.2,
       pos: navFrameData.l,
       width: navFrameData.w - opts.thumbborderwidth * 2
+    });
+  }
+
+  function resizeThumbBorder() {
+    var navFrameData = activeFrame[navFrameKey].data();
+    $thumbBorder.css({
+      width: navFrameData.w - opts.thumbborderwidth * 2,
+      height: navFrameData.h - opts.thumbborderwidth * 2
     });
   }
 
@@ -1263,7 +1282,8 @@ jQuery.Fotorama = function ($fotorama, opts) {
       // If we have a nav ratio, then we need to reset expectations on what the width and height should be
       if (o_nav) {
         measures.nh = numberFromWhatever(opts.navheight, wrapHeight) || o_thumbSide2;
-        stageHeight = wrapHeight - measures.nh;
+        o_thumbSide2 = measures.nh;  // Reset the o_thumbSide2 value to the new nav height value
+        stageHeight = wrapHeight - measures.nh - opts.thumbmargin;
         wrapWidth = stageHeight * ratio;
       }
       width = measures.W = measures.w = wrapWidth;
@@ -1302,7 +1322,8 @@ jQuery.Fotorama = function ($fotorama, opts) {
               .stop()
               .animate({width: measures.nw, height: measures.nh}, time);
 
-              // Now reset the height of the thumbs
+              // Now reset the width of each thumb
+
 
           slideNavShaft({guessIndex: activeIndex, time: time, keep: true});
           if (o_navThumbs && frameAppend.nav) slideThumbBorder(time);
