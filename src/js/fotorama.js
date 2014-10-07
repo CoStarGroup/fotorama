@@ -1283,8 +1283,8 @@ jQuery.Fotorama = function ($fotorama, opts) {
       if (o_nav) {
         measures.nh = numberFromWhatever(opts.navheight, wrapHeight) || o_thumbSide2;
         o_thumbSide2 = measures.nh;  // Reset the o_thumbSide2 value to the new nav height value
-        stageHeight = wrapHeight - measures.nh - opts.thumbmargin;
-        wrapWidth = stageHeight * ratio;
+        stageHeight = wrapHeight - measures.nh - (opts.thumbmargin || 0);
+        wrapWidth = ratio ? stageHeight * ratio : wrapWidth;
       }
       width = measures.W = measures.w = wrapWidth;
       measures.nw = o_nav && numberFromWhatever(opts.navwidth, width) || width;
