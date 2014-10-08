@@ -25,7 +25,7 @@ describe('HTML', function () {
     expect($('img', fotorama.activeFrame.$navThumbFrame).length).toBe(0);
   });
 
-  it('stage & nav image with the same `src` for the second frame `<div data-img="2-lo.jpg">2</div>`', function (done) {
+  xit('stage & nav image with the same `src` for the second frame `<div data-img="2-lo.jpg">2</div>`', function (done) {
     fotorama.show({index: 1, time: 0});
 
     waitsFor(function () {
