@@ -1,9 +1,4 @@
 {
-  "thumbs": {
-    "options": {
-      "specs": "test/specs/thumbs.js"
-    }
-  },
   "options": {
     "helpers": "test/specs/_helpers.js",
     "vendor": ["test/jquery/jquery-1.10.2.min.js", "out/fotorama.js"],
@@ -65,7 +60,11 @@
       "specs": "test/specs/hash-n-show.js"
     }
   },
-  
+  "thumbs": {
+    "options": {
+      "specs": "test/specs/thumbs.js"
+    }
+  },
   "nav": {
     "options": {
       "specs": "test/specs/nav.js"
