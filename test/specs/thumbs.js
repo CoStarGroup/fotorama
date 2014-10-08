@@ -91,9 +91,9 @@ describe('Thumbs', function () {
   });
 
   it('hidden thumbs are not loaded', function (done) {
-    $thumb.each(function () {
+    $thumb.each(function (i) {
       var $this = $(this);
-
+      //console.log(i, ': ', $this.position().left < $('.fotorama__wrap', $fotorama).width());
       if ($this.position().left < $('.fotorama__wrap', $fotorama).width()) {
         waitsFor(function () {
           return $('.fotorama__img', $this)[0];

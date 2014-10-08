@@ -696,7 +696,7 @@ jQuery.Fotorama = function ($fotorama, opts) {
       var $this = $(this),
           thisData = $this.data(),
           eq = thisData.eq,
-          frameHeight = measures.nh - opts.thumbmargin,
+          frameHeight = measures.nh - (measures.ratio ? opts.thumbmargin : 0),
           specialMeasures = {
               h: frameHeight,
               w: measures.ratio ? Math.round(frameHeight * measures.ratio) : thisData.w
@@ -1270,7 +1270,7 @@ jQuery.Fotorama = function ($fotorama, opts) {
         height = measures.height,
         ratio = measures.ratio,
         wrapWidth = $wrap.width(),
-        wrapHeight = $wrap.parent().height(),
+        wrapHeight = $wrap.parent().height() || $wrap.height(),
         windowHeight = $WINDOW.height(),
         stageWidth, stageHeight, navWidth, navHeight;
 
@@ -1280,11 +1280,11 @@ jQuery.Fotorama = function ($fotorama, opts) {
           .css({width: width, minWidth: measures.minwidth || 0, maxWidth: measures.maxwidth || MAX_WIDTH});
 
       // If we have a nav ratio, then we need to reset expectations on what the width and height should be
-      if (o_nav) {
+      if (o_nav === "thumbs") {
         measures.nh = numberFromWhatever(opts.navheight, wrapHeight) || o_thumbSide2;
         o_thumbSide2 = measures.nh;  // Reset the o_thumbSide2 value to the new nav height value
         stageHeight = wrapHeight - measures.nh - (opts.thumbmargin || 0);
-        wrapWidth = ratio ? stageHeight * ratio : wrapWidth;
+        wrapWidth = ratio && stageHeight > 0 ? stageHeight * ratio : wrapWidth;
       }
       width = measures.W = measures.w = wrapWidth;
       measures.nw = o_nav && numberFromWhatever(opts.navwidth, width) || width;

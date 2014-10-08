@@ -6,7 +6,7 @@
   },
   "options": {
     "helpers": "test/specs/_helpers.js",
-    "vendor": ["test/jquery/jquery-1.10.2.min.js", "out/fotorama.js"],
+    "vendor": ["test/jquery/jquery-1.10.2.min.js", "out/fotorama.dev.js"],
     "styles": "out/fotorama.css"
   },
   "utils": {
