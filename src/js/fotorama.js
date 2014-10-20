@@ -459,7 +459,7 @@ jQuery.Fotorama = function ($fotorama, opts) {
         triggerEvent(event, {
           index: _index,
           src: src,
-          frame: data[_index]
+          frame: data ? data[_index] : {}
         });
       }
 
@@ -701,7 +701,7 @@ jQuery.Fotorama = function ($fotorama, opts) {
               h: frameHeight,
               w: measures.ratio ? Math.round(frameHeight * measures.ratio) : thisData.w
           },
-          dataFrame = data[eq] || {},
+          dataFrame = data ? data[eq] || {} : {},
           method = dataFrame.thumbfit || opts.thumbfit,
           position = dataFrame.thumbposition || opts.thumbposition;
 
