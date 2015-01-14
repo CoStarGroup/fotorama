@@ -653,7 +653,7 @@ jQuery.Fotorama = function ($fotorama, opts) {
         if (dataFrame.video) {
           frameData.$wrap.append($videoPlay.clone());
         }
-        if (dataFrame.caption && opts.thumbcaptions) {
+        if ((dataFrame.caption && opts.thumbcaptions) || opts.allowemptycaptions) {
             frameData.$wrap.append($(div(captionClass, div(captionWrapClass, dataFrame.caption))));
         }
       }
