@@ -1,11 +1,11 @@
 document.write(
-    '<div class="fotorama" data-nav="thumbs" data-width="500" data-height="333" data-thumb-width="48" data-thumbheight="48" id="fotorama">' +
+    '<div class="fotorama" data-nav="thumbs" data-width="500" data-height="333" data-thumbwidth="48" data-thumbheight="48" data-thumbratio="1" data-thumbcaptions="true" id="fotorama">' +
         '<a href="test/i/nyc/guy-in-car.jpg" width="500" height="335" data-caption="Guy in car"></a>' +
         '<a href="test/i/nyc/acapella.jpg" data-caption="Acapella"></a>' +
         '<img src="test/i/nyc/crazyjohn.jpg" data-caption="Crazy John" width="450" height="591px">' +
         '<a href="test/i/nyc/dudeintheground.jpg" data-caption="Dude in the ground"><img src="test/i/nyc/dudeintheground.jpg" width="55" height="34"></a>' +
         '<a href="test/i/nyc/dudes.jpg" data-caption="Dudes" data-width="550" data-height="341"><img src="test/i/nyc/eyes.jpg"></a>' +
-        '<a href="test/i/nyc/explanation.jpg" data-caption="Explanation" data-thumb-width="50" data-thumb-height="36"></a>' +
+        '<a href="test/i/nyc/explanation.jpg" data-caption="Explanation" data-thumb-width="50" data-thumb-height="36" data=thumbratio="1.39"></a>' + //  
         '<a href="test/i/nyc/facing-wind.jpg" data-caption="Facing wind" data-width="500" data-height="383"><img></a>' +
         '<a href="test/i/nyc/father-son-looking.jpg" data-caption="Father son looking" data-width="500" data-height="491"><img src="test/i/nyc/father-son-looking.jpg" width="50" height="49"></a>' +
         '<a href="test/i/nyc/flipoff.jpg" data-caption="Flip off"></a>' +
@@ -93,7 +93,6 @@ describe('Thumbs', function () {
   it('hidden thumbs are not loaded', function (done) {
     $thumb.each(function () {
       var $this = $(this);
-
       if ($this.position().left < $('.fotorama__wrap', $fotorama).width()) {
         waitsFor(function () {
           return $('.fotorama__img', $this)[0];
@@ -104,5 +103,26 @@ describe('Thumbs', function () {
     });
   });
 
-
+  it('can show captions', function() {
+    expect($('.fotorama__caption__wrap', $thumb[0]).html()).toBe('Guy in car');
+    expect($('.fotorama__caption__wrap', $thumb[1]).html()).toBe('Acapella');
+    expect($('.fotorama__caption__wrap', $thumb[2]).html()).toBe('Crazy John');
+    expect($('.fotorama__caption__wrap', $thumb[3]).html()).toBe('Dude in the ground');
+    expect($('.fotorama__caption__wrap', $thumb[4]).html()).toBe('Dudes');
+    expect($('.fotorama__caption__wrap', $thumb[5]).html()).toBe('Explanation');
+    expect($('.fotorama__caption__wrap', $thumb[6]).html()).toBe('Facing wind');
+    expect($('.fotorama__caption__wrap', $thumb[7]).html()).toBe('Father son looking');
+    expect($('.fotorama__caption__wrap', $thumb[8]).html()).toBe('Flip off');
+    expect($('.fotorama__caption__wrap', $thumb[9])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[10])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[11]).html()).toBe('Italian guy');
+    expect($('.fotorama__caption__wrap', $thumb[12])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[13])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[14])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[15])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[16])[0]).toBeUndefined();
+    expect($('.fotorama__caption__wrap', $thumb[17]).html()).toBe('Streetlook');
+    expect($('.fotorama__caption__wrap', $thumb[18]).html()).toBe('Two umbrellas');
+    expect($('.fotorama__caption__wrap', $thumb[19]).html()).toBe('Woman reading');
+  });
 });
