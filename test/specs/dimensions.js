@@ -13,7 +13,7 @@ describe('Dimensions', function () {
     fotorama = fotorama || $fotorama.data('fotorama');
   });
 
-  xit('fotorama’s dimensions are the dimensions of the first image (works only if script able to connect to the Internet)', function (done) {
+  it('fotorama’s dimensions are the dimensions of the first image (works only if script able to connect to the Internet)', function (done) {
     var $body = $('body'),
         $stage = $('.fotorama__stage', $fotorama);
 

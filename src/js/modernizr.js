@@ -1,8 +1,8 @@
-/*
 /* Modernizr 2.6.2 (Custom Build) | MIT & BSD
  * Build: http://modernizr.com/download/#-csstransforms3d-prefixed-teststyles-testprop-testallprops-prefixes-domprefixes
  */
-var Modernizr = (function (document) {
+
+var Modernizr = (function (window, document, undefined) {
 
   var version = '2.6.2',
 
@@ -265,4 +265,4 @@ var Modernizr = (function (document) {
   };
 
   return Modernizr;
-})(document);
+})(window, document);

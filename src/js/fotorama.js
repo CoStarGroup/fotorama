@@ -285,7 +285,7 @@ jQuery.Fotorama = function ($fotorama, opts) {
     if (opts.autoplay) setAutoplayInterval(opts.autoplay);
 
     o_thumbSide = numberFromMeasure(opts.thumbwidth) || THUMB_SIZE;
-    o_thumbSide2 = numberFromMeasure(opts.thumbheight) || (opts.thumbratio ? (o_thumbSide / opts.thumbratio) : THUMB_SIZE);
+    o_thumbSide2 = numberFromMeasure(opts.thumbheight) || THUMB_SIZE;
 
     stageWheelTail.ok = navWheelTail.ok = opts.trackpad && !SLOW;
 
@@ -301,17 +301,7 @@ jQuery.Fotorama = function ($fotorama, opts) {
       $navFrame = $navThumbFrame;
       navFrameKey = NAV_THUMB_FRAME_KEY;
 
-      setStyle($style, $.Fotorama.jst.style({
-        w: o_thumbSide, 
-        h: o_thumbSide2, 
-        b: opts.thumbborderwidth, 
-        m: opts.thumbmargin, 
-        s: stampClass,
-        nt: navThumbsClass,
-        nf: navFrameClass,
-        tb: thumbBorderClass,
-        q: !COMPAT
-      }));
+      setStyle($style, $.Fotorama.jst.style({w: o_thumbSide, h: o_thumbSide2, b: opts.thumbborderwidth, m: opts.thumbmargin, s: stamp, q: !COMPAT}));
 
       $nav
           .addClass(navThumbsClass)
@@ -459,7 +449,7 @@ jQuery.Fotorama = function ($fotorama, opts) {
         triggerEvent(event, {
           index: _index,
           src: src,
-          frame: data ? data[_index] : {}
+          frame: data[_index]
         });
       }
 
@@ -653,9 +643,6 @@ jQuery.Fotorama = function ($fotorama, opts) {
         if (dataFrame.video) {
           frameData.$wrap.append($videoPlay.clone());
         }
-        if ((dataFrame.caption && opts.thumbcaptions) || opts.allowemptycaptions) {
-            frameData.$wrap.append($(div(captionClass, div(captionWrapClass, dataFrame.caption))));
-        }
       }
     });
   }
@@ -689,42 +676,31 @@ jQuery.Fotorama = function ($fotorama, opts) {
     if (o_nav !== 'thumbs' || isNaN(pos)) return;
 
     var leftLimit = -pos,
-        rightLimit = -pos + measures.nw,
-        left = 0;
+        rightLimit = -pos + measures.nw;
 
     $navThumbFrame.each(function () {
       var $this = $(this),
           thisData = $this.data(),
           eq = thisData.eq,
-          frameHeight = measures.nh - (measures.ratio ? opts.thumbmargin : 0),
-          specialMeasures = {
-              h: frameHeight,
-              w: measures.ratio ? Math.round(frameHeight * measures.ratio) : thisData.w
+          getSpecialMeasures = function () {
+            return {
+              h: o_thumbSide2,
+              w: thisData.w
+            }
           },
-          dataFrame = data ? data[eq] || {} : {},
+          specialMeasures = getSpecialMeasures(),
+          dataFrame = data[eq] || {},
           method = dataFrame.thumbfit || opts.thumbfit,
           position = dataFrame.thumbposition || opts.thumbposition;
 
-      thisData.h = specialMeasures.h;
-      thisData.w = specialMeasures.w;
-      thisData.l = left;
-      left += thisData.w + opts.thumbmargin;
-
-      // resize this frame
-      $this.css({
-          width: thisData.w,
-          height: thisData.h
-      });
+      specialMeasures.w = thisData.w;
 
       if (thisData.l + thisData.w < leftLimit
           || thisData.l > rightLimit
           || callFit(thisData.$img, specialMeasures, method, position)) return;
 
-      loadFLAG && loadImg([eq], 'navThumb', specialMeasures, method, position);
+      loadFLAG && loadImg([eq], 'navThumb', getSpecialMeasures, method, position);
     });
-
-    // Resize the thumbs border now that we have drawn all of the thumbs
-    resizeThumbBorder();
   }
 
   function frameAppend ($frames, $shaft, type) {
@@ -823,14 +799,6 @@ jQuery.Fotorama = function ($fotorama, opts) {
       time: time * 1.2,
       pos: navFrameData.l,
       width: navFrameData.w - opts.thumbborderwidth * 2
-    });
-  }
-
-  function resizeThumbBorder() {
-    var navFrameData = activeFrame[navFrameKey].data();
-    $thumbBorder.css({
-      width: navFrameData.w - opts.thumbborderwidth * 2,
-      height: navFrameData.h - opts.thumbborderwidth * 2
     });
   }
 
@@ -1154,7 +1122,6 @@ jQuery.Fotorama = function ($fotorama, opts) {
 
       ////console.time('slideNavShaft');
       var guessIndex = limitIndex(activeIndex + minMaxLimit(dirtyIndex - lastActiveIndex, -1, 1));
-      thumbsDraw(0, true);
       slideNavShaft({time: time, coo: guessIndex !== activeIndex && options.coo, guessIndex: typeof options.coo !== 'undefined' ? guessIndex : activeIndex, keep: silent});
       ////console.timeEnd('slideNavShaft');
 
@@ -1270,24 +1237,14 @@ jQuery.Fotorama = function ($fotorama, opts) {
     var width = measures.width,
         height = measures.height,
         ratio = measures.ratio,
-        wrapWidth = $wrap.width(),
-        wrapHeight = $wrap.parent().height() || $wrap.height(),
-        windowHeight = $WINDOW.height(),
-        stageWidth, stageHeight, navWidth, navHeight;
+        windowHeight = $WINDOW.height() - (o_nav ? $nav.height() : 0);
 
     if (measureIsValid(width)) {
       $wrap
           .addClass(wrapOnlyActiveClass)
           .css({width: width, minWidth: measures.minwidth || 0, maxWidth: measures.maxwidth || MAX_WIDTH});
 
-      // If we have a nav ratio, then we need to reset expectations on what the width and height should be
-      if (o_nav === "thumbs") {
-        measures.nh = numberFromWhatever(opts.navheight, wrapHeight) || o_thumbSide2;
-        o_thumbSide2 = measures.nh;  // Reset the o_thumbSide2 value to the new nav height value
-        stageHeight = wrapHeight - measures.nh - (opts.thumbmargin || 0);
-        wrapWidth = ratio && stageHeight > 0 ? stageHeight * ratio : wrapWidth;
-      }
-      width = measures.W = measures.w = wrapWidth;
+      width = measures.W = measures.w = $wrap.width();
       measures.nw = o_nav && numberFromWhatever(opts.navwidth, width) || width;
 
       if (opts.glimpse) {
@@ -1305,7 +1262,6 @@ jQuery.Fotorama = function ($fotorama, opts) {
       height = height || (ratio && width / ratio);
 
       if (height) {
-
         width = Math.round(width);
         height = measures.h = Math.round(minMaxLimit(height, numberFromWhatever(measures.minheight, windowHeight), numberFromWhatever(measures.maxheight, windowHeight)));
 
@@ -1318,13 +1274,9 @@ jQuery.Fotorama = function ($fotorama, opts) {
         stageShaftReposition();
 
         if (o_nav) {
-
           $nav
               .stop()
-              .animate({width: measures.nw, height: measures.nh}, time);
-
-              // Now reset the width of each thumb
-
+              .animate({width: measures.nw}, time);
 
           slideNavShaft({guessIndex: activeIndex, time: time, keep: true});
           if (o_navThumbs && frameAppend.nav) slideThumbBorder(time);

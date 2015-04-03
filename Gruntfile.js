@@ -4,7 +4,7 @@ grunt.initConfig({
 pkg: grunt.file.readJSON('package.json'),
 meta: {
   banner: '/*!\n * <%= pkg.name %> <%= pkg.version %> | http://fotorama.io/license/\n */\n',
-  bannerJs: '<%= meta.banner %>',
+  bannerJs: '<%= meta.banner %>fotoramaVersion = \'<%= pkg.version %>\';\n',
   sass: ['src/scss/*'],
   js: [
     'src/js/intro.js',
@@ -486,11 +486,11 @@ grunt.loadNpmTasks('grunt-tweet');
 grunt.loadNpmTasks('grunt-gh-release');
 
 var defaultTask = 'copy:i sass autoprefixer jst replace:jst concat:js replace:console concat:css uglify cssmin jasmine clean copy:example compress';
-var buildTask = 'copy:i sass autoprefixer jst replace:jst concat:js replace:console concat:css uglify cssmin clean copy:example compress';
+//var build = 'copy:i sass autoprefixer jst replace:jst concat:js replace:console concat:css uglify cssmin clean copy:example compress'.split(' ');
 
 // Compile
 grunt.registerTask('default', defaultTask.split(' '));
-grunt.registerTask('build', buildTask.split(' '));
+//grunt.registerTask('build', build);
 //grunt.registerTask('look', 'copy:i sass autoprefixer jst replace:jst concat:js watch'.split(' '));
 
 // Publish, will fail without secret details ;-)
